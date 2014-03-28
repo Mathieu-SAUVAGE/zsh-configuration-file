@@ -1,9 +1,29 @@
 # enable the autocompletion with alias management
 autoload -U compinit && compinit
 setopt completealiases
-
+# enable cache for completion
+zstyle ':completion:*' use-cache on
+zstyle ':completion:*' cache-path ~/.zsh_cache
+# improve completion format
+zstyle ':completion:*:descriptions' format '%U%B%d%b%u'
+zstyle ':completion:*:warnings' format '%BSorry, no matches for: %d%b'
 # arrow key navigation enbaled
 zstyle ':completion:*' menu select
+
+# enable selective historique
+setopt hist_ignore_space
+# delete historique double values
+setopt hist_ignore_all_dups
+
+# enable autocd
+setopt autocd
+
+# enable advances regexpr
+setopt extendedglob
+
+# color completion
+zmodload zsh/complist
+zstyle ':completion:*:*:kill:*:processes' list-colors "=(#b) #([0-9]#)*=36=31"
 
 # warning if file exists
 #setopt NO_clobber
