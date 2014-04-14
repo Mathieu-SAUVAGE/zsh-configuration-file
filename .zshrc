@@ -106,7 +106,7 @@ function get_power_information(){
 	POWER_ADAPTER_STATE=$(acpi -a)
 	POWER_ADAPTER_STATE_FORMATTED=${${POWER_ADAPTER_STATE#*:}:1}
 
-    if [[ $POWER_ADAPTER_STATE_FORMATTED == "on-line" && $BATTERY_STATE != "" ]]; then
+    if [[ $POWER_ADAPTER_STATE_FORMATTED == "on-line" && $BATTERY_STATE == "" ]]; then
         echo -n $ICON_POWER_ADAPTER
     elif [[ $BATTERY_STATE != "" ]]; then
         BATTERY_STATE_FORMATTED=${${${BATTERY_STATE#*,}%%,*}:1}
