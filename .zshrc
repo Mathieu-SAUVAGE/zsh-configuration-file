@@ -37,7 +37,7 @@ autoload -U promptinit && promptinit
 # commands corrections
 setopt correctall
 
-​​# prompt definition
+# prompt definition
 autoload -U colors && colors
 
 ICON_SEPARATOR_RIGHT_FULL='⮀'
@@ -103,46 +103,42 @@ function build_prompt(){
 
 function get_power_information(){
 	BATTERY_STATE=$(acpi -b)
-	POWER_ADAPTER_STATE_=$(acpi -a)
+	POWER_ADAPTER_STATE=$(acpi -a)
 	POWER_ADAPTER_STATE_FORMATTED=${${POWER_ADAPTER_STATE#*:}:1}
 
-    if [[ $POWER_ADAPTER_STATE_FORMATTED == "on-line" && BATTERY_STATE != "" ]]; then
-        echo -n "${ICON_POWER_ADAPTER}"
-    elif [[ BATTERY_STATE != "" ]]; then
+    if [[ $POWER_ADAPTER_STATE_FORMATTED == "on-line" && $BATTERY_STATE != "" ]]; then
+        echo -n $ICON_POWER_ADAPTER
+    elif [[ $BATTERY_STATE != "" ]]; then
         BATTERY_STATE_FORMATTED=${${${BATTERY_STATE#*,}%%,*}:1}
         case $POWER_ADAPTER_STATE_FORMATTED in
             "on-line")
-                echo -n "${ICON_POWER_ADAPTER}:${BATTERY_STATE_FORMATTED}%"
+                echo -n $ICON_POWER_ADAPTER':'$BATTERY_STATE_FORMATTED'%'
                 ;;
             "off-line")
-                echo -n "${ICON_POWER_BATTERY}:${BATTERY_STATE_FORMATTED}%"
+                echo -n $ICON_POWER_BATTERY':'$BATTERY_STATE_FORMATTED'%'
             ;;
         esac
     fi
 }
 
 function get_git_information(){
-	RESULT=$(git branch | grep \*)
-	if [[ $? -eq 0 ]]; then
-		RESULT=${RESULT:2}
-		echo -n "${ICON_GIT_BRANCH}:${RESULT}%"
-	fi
+	RESULT=${$(git branch | grep '^/*'):2}
+	echo -n ${ICON_GIT_BRANCH}':'${RESULT}'%'
 }
 
 function build_right_prompt(){
 	local result=""
 
-	[[ $RETVAL -ne 0 ]] && result=$result" $ICON_FALSE "
+	$(which git >/dev/null) && $(ls .git 2>/dev/null) && result=$result"$(get_git_information) "
 
-	$(which acpi >/dev/null) && result=$result" $(get_power_information)"
-	$(which git >/dev/null) && result=$result" $(get_git_information)"
+	$(which acpi >/dev/null) && result=$result"$(get_power_information) "
+	result=$result"$ICON_BACKGROUND_JOBS:%j"
 
-	result=$result" $ICON_BACKGROUND_JOBS:%j"
-
-	echo -n "$result"
+	echo -n $result"%{$reset_color%}"
 }
 
-RPROMPT=$(build_right_prompt)
+setopt PROMPT_SUBST
+RPROMPT='$(build_right_prompt)'
 PROMPT=$(build_prompt)
 
 #alias
