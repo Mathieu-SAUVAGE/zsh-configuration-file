@@ -112,10 +112,10 @@ function get_power_information(){
         BATTERY_STATE_FORMATTED=${${${BATTERY_STATE#*,}%%,*}:1}
         case $POWER_ADAPTER_STATE_FORMATTED in
             "on-line")
-                echo -n $ICON_POWER_ADAPTER':'$BATTERY_STATE_FORMATTED'%'
+                echo -n $ICON_POWER_ADAPTER' :'$BATTERY_STATE_FORMATTED'%'
                 ;;
             "off-line")
-                echo -n $ICON_POWER_BATTERY':'$BATTERY_STATE_FORMATTED'%'
+                echo -n $ICON_POWER_BATTERY' :'$BATTERY_STATE_FORMATTED'%'
             ;;
         esac
     fi
