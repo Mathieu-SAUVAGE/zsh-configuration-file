@@ -141,14 +141,6 @@ setopt PROMPT_SUBST
 RPROMPT='$(build_right_prompt)'
 PROMPT=$(build_prompt)
 
-#alias
-alias ls='ls --color=auto'                   # replace the ls command to add coloration
-alias ll='ls --color=auto -lh'               # list all files and folders with human readable size and coloration
-alias lal='ls --color=auto -lah'             # list all files and folders including hidden files and folders with human readable size and coloration
-
-alias grep='grep --color=auto'               # replace the grep command to add coloration
-alias shutdown='shutdown now'                # replace the default shutdown command to add 'now' parameter
-
 #man coloration
 man() {
 	env LESS_TERMCAP_mb=$'\E[01;31m' \
@@ -160,3 +152,17 @@ man() {
 	LESS_TERMCAP_us=$'\E[04;38;5;146m' \
 	man "$@"
 }
+
+#alias
+alias ls='ls --color=auto'                   # replace the ls command to add coloration
+alias ll='ls --color=auto -lh'               # list all files and folders with human readable size and coloration
+alias lal='ls --color=auto -lah'             # list all files and folders including hidden files and folders with human readable size and coloration
+
+alias grep='grep --color=auto'               # replace the grep command to add coloration
+alias shutdown='shutdown now'                # replace the default shutdown command to add 'now' parameter
+
+
+SYSTEM_ID=${$(cat /etc/*-release|grep ID)##*=}
+if [[ $SYSTEM_ID == "arch" ]]; then
+        alias findpacfiles='find / -regextype posix-extended -regex ".+\.pac(new|save|orig)" 2> /dev/null'
+fi
