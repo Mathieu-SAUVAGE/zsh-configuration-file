@@ -161,8 +161,7 @@ alias lal='ls --color=auto -lah'             # list all files and folders includ
 alias grep='grep --color=auto'               # replace the grep command to add coloration
 alias shutdown='shutdown now'                # replace the default shutdown command to add 'now' parameter
 
-
-SYSTEM_ID=${$(cat /etc/*-release|grep ID)##*=}
-if [[ $SYSTEM_ID == "arch" ]]; then
+PACMAN_IS_INSTALL=$(which pacman | grep -c pacman)
+if [[ $PACMAN_IS_INSTALL -eq 1 ]]; then
         alias findpacfiles='find / -regextype posix-extended -regex ".+\.pac(new|save|orig)" 2> /dev/null'
 fi
